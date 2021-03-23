@@ -24,5 +24,8 @@
     <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam04/content">
     	DB 연동
     </a>
+    <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam04_homework/content">
+    	DB 연동(과제)
+    </a>
   </li>
 </ul>

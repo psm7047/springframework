@@ -1,6 +1,7 @@
 package com.mycompany.webapp.controller;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -11,16 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.webapp.dto.Board;
-import com.mycompany.webapp.service.Exam04Service;
+import com.mycompany.webapp.dto.Pager;
+import com.mycompany.webapp.service.BoardsService;
 
 @Controller
 @RequestMapping("/exam04")
 public class Exam04Controller {
 	
 	@Autowired
-	private Exam04Service exam04Service;
+	private BoardsService boardsService;
 	
 	@Autowired
 	private DataSource dataSource;
@@ -44,16 +47,72 @@ public class Exam04Controller {
 		return "exam04/content";
 	}
 	
-	@GetMapping("/boards")
+	/*@GetMapping("/list")
 	public String getBoardList(Model model) {
-		List<Board> list = exam04Service.getBoardList();
+		List<Board> list = boardsService.getBoardList();
 		model.addAttribute("list", list);
+		return "exam04/boardlist";
+	}*/
+	
+	@GetMapping("/list")
+	public String getBoardList(@RequestParam(defaultValue="1") int pageNo, Model model) {
+		int totalRows = boardsService.getTotalRows();
+		Pager pager = new Pager(10,5, totalRows, pageNo);
+		List<Board> list = boardsService.getBoardList(pager);
+		model.addAttribute("list", list);
+		model.addAttribute("pager", pager);
 		return "exam04/boardlist";
 	}
 	
-	@PostMapping("/boards")
-	public String saveBoard() {
-		return "redirect:/boards";
+	@GetMapping("/createForm")
+	public String createForm(Model model) {
+		return "exam04/createForm";
+	}
+	
+	/*@PostMapping("/create")
+	public String saveBoard(String btitle, String bcontent) {
+		Board board = new Board();
+		board.setBtitle(btitle);
+		board.setBcontent(bcontent);
+		board.setBwriter("user1");
+		
+		boardsService.saveBoard(board);
+		
+		return "redirect:/exam04/list";
+	}*/
+	
+	@PostMapping("/create")
+	public String create(Board board) {
+		board.setBwriter("user1");
+		boardsService.saveBoard(board);
+		return "redirect:/exam04/list";
+	}
+	
+	@GetMapping("/read")
+	public String read(int bno, Model model) {
+		boardsService.addHitcount(bno);
+		Board board = boardsService.getBoard(bno);
+		model.addAttribute("board", board);
+		return "exam04/read";
+	}
+	
+	@GetMapping("/updateForm")
+	public String updateForm(int bno, Model model) {
+		Board board = boardsService.getBoard(bno);
+		model.addAttribute("board", board);
+		return "exam04/updateForm";
+	}
+	
+	@PostMapping("/update")
+	public String update(Board board) {
+		boardsService.updateBoard(board);
+		return "redirect:/exam04/list";
+	}
+	
+	@GetMapping("/delete") 
+	public String delete(int bno) {
+		boardsService.deleteBoards(bno);
+		return "redirect:/exam04/list";
 	}
 
 }
