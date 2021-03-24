@@ -1,17 +1,27 @@
 package com.mycompany.webapp.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.Board;
 import com.mycompany.webapp.dto.Pager;
 
-@Repository
+@Mapper
+public interface BoardsDao2 {
+	public List<Board> selectAll();
+	public List<Board> selectByPage(Pager pager);
+	public int insert(Board board);
+	public Board selectByBno(int bno);
+	public int update(Board board);
+	public int deleteByBno(int bno);
+	public int updateBhitcount(int bno);
+	public int count();
+}
+
+
+
+/*@Repository
 public class BoardsDao2 {
 	
 	@Autowired
@@ -52,4 +62,4 @@ public class BoardsDao2 {
 		return rows;
 	}
 	
-}
+}*/

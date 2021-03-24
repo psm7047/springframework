@@ -36,5 +36,8 @@
     <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam05/content">
     	게시판
     </a>
+    <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam05_homework/content">
+    	과제
+    </a>
     </li>
 </ul>
