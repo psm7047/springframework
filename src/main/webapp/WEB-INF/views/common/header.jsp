@@ -27,7 +27,14 @@
 			</a>
 			<div>
 				<div>
-					<a class="btn btn-success btn-sm" href="#">로그인</a>
+				<c:if test="${loginUid == null}">
+				<a class="btn btn-success btn-sm" href="${pageContext.request.contextPath}/exam07/loginForm">로그인</a>
+				</c:if>
+				<c:if test="${loginUid != null}">
+				<span class="mr-2">User: ${loginUid}</span>
+				<a class="btn btn-success btn-sm" href="${pageContext.request.contextPath}/exam07/logout">로그아웃</a>
+				</c:if>
+					
 				</div>
 			</div>
 		</nav>

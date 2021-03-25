@@ -52,8 +52,10 @@
 										<button class="btn btn-outline-primary btn-sm"
 											onclick="getList(${pager.totalPageNo})">맨끝</button>
 									</div>
+									<c:if test="${loginUid != null}">
 									<button class="btn btn-success btn-sm" 
 											onclick="createForm()">글쓰기</button>
+									</c:if>
 								</div>
 							</td>
 						</tr>

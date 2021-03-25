@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -42,9 +43,23 @@ public class Exam05Controller {
 	}
 	
 	@GetMapping("/list")
-	public String list(@RequestParam(defaultValue="1") int pageNo, Model model) {
+	public String getBoardList(String pageNo,
+			Model model, HttpSession session) {
+		
+		int intPageNo=1;
+		if(pageNo==null) {
+		//세션에서 Pager를 찾고, 있으면 pageNo설정
+			Pager pager = (Pager) session.getAttribute("pager");
+			if(pager!=null) {
+				intPageNo=pager.getPageNo();
+			}
+		} else {	//클라이언트에서 pageNo가 넘어왔을 때  
+			intPageNo = Integer.parseInt(pageNo);
+		}
+
 		int totalRows = boardsService.getTotalRows();
-		Pager pager = new Pager(10,5, totalRows, pageNo);
+		Pager pager = new Pager(10,5, totalRows, intPageNo);
+		session.setAttribute("pager", pager);
 		List<Board> list = boardsService.getBoardList(pager);
 		model.addAttribute("list", list);
 		model.addAttribute("pager", pager);
@@ -111,13 +126,20 @@ public class Exam05Controller {
 	}
 	
 	@GetMapping("/createForm")
-	public String createFormWithAttach() {
-		return "exam05/createForm";
+	public String createFormWithAttach(HttpSession session) {
+		String uid = (String) session.getAttribute("loginUid");
+		if(uid ==null) {
+			return "redirect:/exam07/loginForm";
+		}else {
+			return "exam05/createForm";
+		}
+		
 	}
 	
 	@PostMapping(value="/create", produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String create(Board board) {
+	public String create(Board board, HttpSession session) {
+		String uid = (String) session.getAttribute("loginUid");
 		MultipartFile battach = board.getBattach();
 		if(battach !=null && !battach.isEmpty()) {
 			board.setBattachoname(battach.getOriginalFilename());
@@ -137,7 +159,7 @@ public class Exam05Controller {
 		logger.info(board.getBattachtype());
 		logger.info(board.getBattachsname());*/
 		
-		board.setBwriter("user1");
+		board.setBwriter(uid);
 		boardsService.saveBoard(board);
 		
 		JSONObject jsonObject = new JSONObject();

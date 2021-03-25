@@ -4,6 +4,8 @@ public class User {
 	private String uid;
 	private String uname;
 	private String upassword;
+	private String uauthority;
+	private int uenabled;
 	private String[] uhobby;
 	private String ujob;
 	
@@ -24,6 +26,18 @@ public class User {
 	}
 	public void setUpassword(String upassword) {
 		this.upassword = upassword;
+	}
+	public String getUauthority() {
+		return uauthority;
+	}
+	public void setUauthority(String uauthority) {
+		this.uauthority = uauthority;
+	}
+	public int getUenabled() {
+		return uenabled;
+	}
+	public void setUenabled(int uenabled) {
+		this.uenabled = uenabled;
 	}
 	public String[] getUhobby() {
 		return uhobby;
