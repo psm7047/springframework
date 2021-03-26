@@ -22,6 +22,7 @@
     	요청 파라미터 받기
     </a>
   </li>
+ 
   <li class="nav-item mb-2">
     <h6 class="text-white">DB 연동</h6>
      <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam04/content">
@@ -31,6 +32,7 @@
     	(과제)
     </a>
     </li>
+    
     <li class="nav-item mb-2">
     <h6 class="text-white">AJAX 연동</h6>
     <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam05/content">
@@ -40,12 +42,14 @@
     	과제
     </a>
     </li>
+    
     <li class="nav-item mb-2">
     <h6 class="text-white">상태 유지</h6>
     <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam06/content">
     	쿠키(Cookie) & 세션(Session)
     </a>
     </li>
+    
     <li class="nav-item mb-2">
     <h6 class="text-white">회원 서비스</h6>
     <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam07/joinForm">
@@ -53,6 +57,23 @@
     </a>
     <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam07/loginForm">
     	로그인
+    </a>
+    </li>
+    
+    <li class="nav-item mb-2">
+    <h6 class="text-white">Spring security</h6>
+    <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam08/user/boardlist">
+    	회원이 사용하는 페이지
+    </a>
+    <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam08/admin/boardlist">
+    	관리자가 사용하는 페이지
+    </a>
+    </li>
+    
+     <li class="nav-item mb-2">
+    <h6 class="text-white">유효성 검사</h6>
+    <a class="nav-link text-warning" href="${pageContext.request.contextPath}/exam09/joinForm">
+    	폼 유효성 검사
     </a>
     </li>
 </ul>

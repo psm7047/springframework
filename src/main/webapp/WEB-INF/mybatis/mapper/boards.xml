@@ -1,65 +1,71 @@
 <?xml version="1.0" encoding="euc-kr" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.BoardsDao">
-   <select id="selectAll" resultType="board">
-   	select bno, btitle, bwriter, bdate, bhitcount
-   	from boards
-   	order by bno desc
-   </select>
+	<select id="selectAll" resultType="board">
+		select bno, btitle, bwriter, bdate, bhitcount
+		from boards
+		order by bno desc
+	</select>
 
-	<select id="selectByPage" parameterType="pager" resultType="board">
+	<select id="selectByPage" parameterType="pager"
+		resultType="board">
 		select rnum, bno,btitle,bcontent,bwriter,bdate,bhitcount
 		from(
-			select rownum as rnum,bno,btitle,bcontent,bwriter,bdate,bhitcount
-				from (
-					select bno,btitle,bcontent,bwriter,bdate,bhitcount
-					from boards
-					order by bno desc
-				)
-			where rownum &lt;=#{endRowNo}
+		select rownum as rnum,bno,btitle,bcontent,bwriter,bdate,bhitcount
+		from (
+		select bno,btitle,bcontent,bwriter,bdate,bhitcount
+		from boards
+		order by bno desc
+		)
+		where rownum &lt;=#{endRowNo}
 		)
 		where rnum &gt;= #{startRowNo}
 
 	</select>
-   
-   <insert id="insert" parameterType="board">
-	   <if test="battachoname == null">
-	   	insert into boards
-	   	(bno, btitle, bcontent, bwriter, bdate, bhitcount)
-	   	values
-	   	(seq_boards_bno.nextval, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0)
-	   </if>
-	   <if test="battachoname != null">
-	   	insert into boards
-	   	(bno, btitle, bcontent, bwriter, bdate, bhitcount, battachoname, battachsname, battachtype)
-	   	values
-	   	(seq_boards_bno.nextval, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0, #{battachoname}, #{battachsname}, #{battachtype})
-	   </if>
-   </insert>
-   
-   <select id="selectByBno" parameterType="int" resultType="board">
-   	select bno, btitle, bcontent, bwriter, bdate, bhitcount,
-   			battachoname, battachsname, battachtype
-   	from boards
-   	where bno=#{bno}
-   </select>
-   
-   <update id="update" parameterType="board">
-   	update boards set
-   		btitle=#{btitle},
-   		bcontent=#{bcontent}
-   		where bno=#{bno}
-   </update>
-   
-   <delete id="deleteByBno" parameterType="int">
-   	delete from boards where bno=#{bno}
-   </delete>
-   
-   <update id="updateBhitcount" parameterType="int">
-   	update boards set bhitcount=bhitcount+1 where bno=#{bno}
-   </update>
-   
-   <select id="count" resultType="int">
-   	select count(*) from boards
-   </select>
+
+	<insert id="insert" parameterType="board">
+		<selectKey keyProperty="bno" resultType="int" order="BEFORE">
+			select seq_boards_bno.nextval from dual
+		</selectKey>
+		<if test="battachoname == null">
+			insert into boards
+			(bno, btitle, bcontent, bwriter, bdate, bhitcount)
+			values
+			(#{bno}, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0)
+		</if>
+		<if test="battachoname != null">
+			insert into boards
+			(bno, btitle, bcontent, bwriter, bdate, bhitcount, battachoname,
+			battachsname, battachtype)
+			values
+			(#{bno}, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0, #{battachoname},
+			#{battachsname}, #{battachtype})
+		</if>
+	</insert>
+
+	<select id="selectByBno" parameterType="int" resultType="board">
+		select bno, btitle, bcontent, bwriter, bdate, bhitcount,
+		battachoname, battachsname, battachtype
+		from boards
+		where bno=#{bno}
+	</select>
+
+	<update id="update" parameterType="board">
+		update boards set
+		btitle=#{btitle},
+		bcontent=#{bcontent}
+		where bno=#{bno}
+	</update>
+
+	<delete id="deleteByBno" parameterType="int">
+		delete from boards where bno=#{bno}
+	</delete>
+
+	<update id="updateBhitcount" parameterType="int">
+		update boards set bhitcount=bhitcount+1 where bno=#{bno}
+	</update>
+
+	<select id="count" resultType="int">
+		select count(*) from boards
+	</select>
 </mapper>
